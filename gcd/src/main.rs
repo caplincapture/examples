@@ -27,8 +27,14 @@ use std::str::FromStr;
 use std::env;
 
 fn main() {
-    let mut numbers = Vec::new();
+   let mut numbers = Vec::new();
 
+    println!("{:?}", env::args());
+
+    for arg in env::args().skip(2) {
+        numbers.push(arg.parse::<u64>().unwrap());
+    }
+    println!("{:?}", numbers);
 
     if numbers.len() == 0 {
         eprintln!("Usage: gcd NUMBER ...");
@@ -36,9 +42,11 @@ fn main() {
     }
 
     let mut d = numbers[0];
-    for m in &numbers[1..] {
+        for m in &numbers[1..] {
+            d = gcd(d, *m);
+            
     }
 
     println!("The greatest common divisor of {:?} is {}",
-             numbers, d);
+        numbers, d);
 }
