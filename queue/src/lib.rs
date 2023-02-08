@@ -24,16 +24,14 @@ impl Queue {
 
             // Bring the elements in younger over to older, and put them in
             // the promised order.
-            //use std::mem::swap;
-            self.younger.reverse(); 
+            use std::mem::swap;
+            swap(&mut self.older, &mut self.younger);
+            self.older.reverse();
+        }
 
         // Now older is guaranteed to have something. Vec's pop method
         // already returns an Option, so we're set.
-        }
-        let elem = self.younger.pop();
-        //self.older.pop()
-        self.younger.reverse();
-        elem
+        self.older.pop()
     }
 }
 
@@ -45,8 +43,7 @@ fn test_push_pop() {
     q.push('1');
     let start = Instant::now();
     assert_eq!(q.pop(), Some('0'));
-    let duration = start.elapsed();
-    println!("{:?}",duration);
+    
     q.push('∞');
     assert_eq!(q.pop(), Some('1'));
     assert_eq!(q.pop(), Some('∞'));
@@ -56,6 +53,8 @@ fn test_push_pop() {
     (&mut q).push('1');
     assert_eq!(q.pop(), Some('0'));
     assert_eq!(q.pop(), Some('1'));
+    let duration = start.elapsed();
+    println!("{:?}",duration);
 }
 
 impl Queue {
