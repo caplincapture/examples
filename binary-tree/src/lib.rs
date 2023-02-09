@@ -68,7 +68,16 @@ fn build_binary_tree() {
 
 impl<T: Clone> BinaryTree<T> {
     fn walk(&self) -> Vec<T> {
-        
+        let ret: Vec<T> = Vec::new();
+        match *self {
+            BinaryTree::NonEmpty(ref node) => {
+                ret.push(node.element);
+                node.left.walk();
+                node.right.walk();
+            },
+            BinaryTree::Empty => (),
+        }
+        ret
     }
 }
 
