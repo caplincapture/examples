@@ -1,12 +1,14 @@
 #![allow(dead_code)]
 
 // An ordered collection of `T`s.
+#[derive(Debug)]
 enum BinaryTree<T> {
     Empty,
     NonEmpty(Box<TreeNode<T>>),
 }
 
 // A part of a BinaryTree.
+#[derive(Debug)]
 struct TreeNode<T> {
     element: T,
     left: BinaryTree<T>,
@@ -66,22 +68,21 @@ fn build_binary_tree() {
                vec!["Jupiter", "Mars", "Mercury", "Saturn", "Uranus", "Venus"]);
 }
 
-impl<T: Clone> BinaryTree<T> {
+impl<T: Clone + std::fmt::Debug> BinaryTree<T> {
     fn walk(&self) -> Vec<T> {
-        let mut ret: Vec<T> = Vec::new();
         match *self {
             BinaryTree::NonEmpty(ref node) => {
-                node.left.walk();
-                ret.push(node.element.clone());
-                node.right.walk();
+                let mut result = node.left.walk();
+                result.push(node.element.clone());
+                result.extend(node.right.walk());
+                result
             },
-            BinaryTree::Empty => (),
+            BinaryTree::Empty => vec![],
         }
-        ret
     }
 }
 
-impl<T: Ord> BinaryTree<T> {
+impl<T: Ord + std::fmt::Debug> BinaryTree<T> {
     fn add(&mut self, value: T) {
         match *self {
             BinaryTree::Empty => { 
