@@ -68,11 +68,11 @@ fn build_binary_tree() {
 
 impl<T: Clone> BinaryTree<T> {
     fn walk(&self) -> Vec<T> {
-        let ret: Vec<T> = Vec::new();
+        let mut ret: Vec<T> = Vec::new();
         match *self {
             BinaryTree::NonEmpty(ref node) => {
-                ret.push(node.element);
                 node.left.walk();
+                ret.push(node.element.clone());
                 node.right.walk();
             },
             BinaryTree::Empty => (),
@@ -83,7 +83,22 @@ impl<T: Clone> BinaryTree<T> {
 
 impl<T: Ord> BinaryTree<T> {
     fn add(&mut self, value: T) {
-        
+        match *self {
+            BinaryTree::Empty => { 
+                *self = BinaryTree::NonEmpty(
+                    Box::new(TreeNode {
+                        element: value, 
+                        left: BinaryTree::Empty, 
+                        right: BinaryTree::Empty}));
+            },
+            BinaryTree::NonEmpty(ref mut elem) => {
+                if value <= elem.element {
+                    elem.left.add(value);
+                } else {
+                    elem.right.add(value);
+                }
+            }
+        }
     }
 }
 
@@ -132,35 +147,45 @@ struct TreeIter<'a, T> {
 
 impl<'a, T: 'a> TreeIter<'a, T> {
     fn push_left_edge(&mut self, mut tree: &'a BinaryTree<T>) {
-        
+        while let NonEmpty(ref node) = *tree {
+            self.unvisited.push(node);
+            tree = &node.left;
+        }
     }
 }
 
 impl<T> BinaryTree<T> {
     fn iter(&self) -> TreeIter<T> {
-        
+        let mut tree = TreeIter { unvisited: Vec::new()};
+        tree.push_left_edge(self);
+        tree
     }
 }
 
 impl<'a, T: 'a> IntoIterator for &'a BinaryTree<T> {
-    
-}
+    type Item = &'a T;
+    type IntoIter = TreeIter<'a, T>;
 
-impl<'a, T> Iterator for TreeIter<'a, T> {
+    fn into_iter(self) -> Self::IntoIter {
+        self.iter()
+    }
+} 
+
+ impl<'a, T> Iterator for TreeIter<'a, T> {
     type Item = &'a T;
     fn next(&mut self) -> Option<&'a T> {
         // Find the node this iteration must produce,
         // or finish the iteration. (Use the `?` operator
         // to return immediately if it's `None`.)
-        
+        let item = self.unvisited.pop()?;
 
         // After `node`, the next thing we produce must be the leftmost
         // child in `node`'s right subtree, so push the path from here
         // down. Our helper method turns out to be just what we need.
-        
+        self.push_left_edge(&item.right);
 
         // Produce a reference to this node's value.
-        
+        Some(&item.element)
     }
 }
 
