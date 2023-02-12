@@ -9,6 +9,8 @@
 //! `num_complex` crate, whose `Complex` type is incorporated into the `num`
 //! crate.
 
+mod libfunc;
+
 macro_rules! define_complex {
     () => {
         #[derive(Clone, Copy, Debug)]
@@ -38,11 +40,11 @@ mod first_cut {
     where
         T: Add<Output = T>,
     {
-        type Output = Self;
+        type Output = Complex<T>;
         fn add(self, rhs: Self) -> Self {
             Complex {
                 re: self.re + rhs.re,
-                im: self.im + rhs.im,
+                im: self.im + rhs.im
             }
         }
     }
@@ -57,7 +59,7 @@ mod first_cut {
         fn sub(self, rhs: Self) -> Self {
             Complex {
                 re: self.re - rhs.re,
-                im: self.im - rhs.im,
+                im: self.im - rhs.im
             }
         }
     }
@@ -66,14 +68,13 @@ mod first_cut {
 
     impl<T> Mul for Complex<T>
     where
-        T: Clone + Add<Output = T> + Sub<Output = T> + Mul<Output = T>,
+    T: Mul<Output = T>,
     {
         type Output = Self;
         fn mul(self, rhs: Self) -> Self {
             Complex {
-                re: self.re.clone() * rhs.re.clone()
-                    - (self.im.clone() * rhs.im.clone()),
-                im: self.im * rhs.re + self.re * rhs.im,
+                re: self.re * rhs.re,
+                im: self.im * rhs.im 
             }
         }
     }
@@ -101,7 +102,7 @@ mod first_cut {
         assert_eq!(x * y, Complex { re: 0, im: 29 });
     }
 
-    impl<T: Eq> Eq for Complex<T> {}
+    
 }
 
 mod non_generic_add {
@@ -110,11 +111,11 @@ mod non_generic_add {
     use std::ops::Add;
 
     impl Add for Complex<i32> {
-        type Output = Complex<i32>;
+        type Output = Self;
         fn add(self, rhs: Self) -> Self {
             Complex {
                 re: self.re + rhs.re,
-                im: self.im + rhs.im,
+                im: self.im + rhs.im
             }
         }
     }
@@ -126,14 +127,13 @@ mod somewhat_generic {
     use std::ops::Add;
 
     impl<T> Add for Complex<T>
-    where
-        T: Add<Output = T>,
+    where T: Add<Output = T>,
     {
         type Output = Self;
         fn add(self, rhs: Self) -> Self {
             Complex {
                 re: self.re + rhs.re,
-                im: self.im + rhs.im,
+                im: self.im + rhs.im
             }
         }
     }
@@ -141,14 +141,13 @@ mod somewhat_generic {
     use std::ops::Neg;
 
     impl<T> Neg for Complex<T>
-    where
-        T: Neg<Output = T>,
+    where T: Neg<Output = T>,
     {
         type Output = Complex<T>;
         fn neg(self) -> Complex<T> {
             Complex {
-                re: -self.re,
-                im: -self.im,
+                re: - self.re,
+                im: - self.im
             }
         }
     }
@@ -179,8 +178,7 @@ mod impl_compound {
     use std::ops::AddAssign;
 
     impl<T> AddAssign for Complex<T>
-    where
-        T: AddAssign<T>,
+    where T: AddAssign
     {
         fn add_assign(&mut self, rhs: Complex<T>) {
             self.re += rhs.re;
@@ -212,6 +210,8 @@ mod derive_everything {
 ///
 /// These use a separate, non-generic `Complex` type, for simplicity.
 mod formatting {
+    use std::fmt::write;
+
     #[test]
     fn complex() {
         #[derive(Copy, Clone, Debug)]
