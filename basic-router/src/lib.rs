@@ -1,5 +1,7 @@
 #![allow(dead_code)]
 
+mod Circuit;
+
 use std::collections::HashMap;
 
 struct Request {

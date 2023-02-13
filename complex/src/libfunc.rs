@@ -46,7 +46,7 @@ mod Proto_Trait {
  // keep internal to prevent impls
 pub use Proto_Trait::{ProtocolOne, ProtocolTwo};
 
-use self::{Proto_Trait::PrototypeProtocol};
+use self::Proto_Trait::PrototypeProtocol;
 
 struct Process<P: PrototypeProtocol> {
     protocol: P,
@@ -59,10 +59,10 @@ impl Process<ProtocolOne> {
     }
 }
 
-use crate::libfunc::IpAddrKind::V6;
+
 // all protocol-specific impls go into their own block
 
 fn main() {
-    let proc = Process{protocol: ProtocolTwo{prot: V6()}};
-    proc.mount_ip()
+    let proc = Process{protocol: ProtocolTwo{prot: IpAddrKind::V4()}};
+    proc.mount_ip();
 }
