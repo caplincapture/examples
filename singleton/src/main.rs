@@ -1,7 +1,7 @@
 
 
 //#[derive(Debug)]
-pub struct LoggingFacade<'a> {
+/* pub struct LoggingFacade<'a> {
     message: Loggable<'a>,
 }
 
@@ -18,12 +18,12 @@ impl LoggingFacade<'_> {
         self.message.change()
     }
 }
-
-pub struct Loggable<'a> {
-    msg: &'a str
+ */
+pub struct Loggable{
+    msg: &str
 }
 
-impl Loggable<'_> {
+impl Loggable {
     pub fn new() -> Self {
         Self {msg: "new"}
     }
@@ -35,6 +35,5 @@ impl Loggable<'_> {
 
 fn main() {
     let mut loggable = Loggable::new();
-    let changed = logger.change();
-    changed
+    let changed = loggable.change();
 }
