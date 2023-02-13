@@ -34,7 +34,7 @@ impl Loggable<'_> {
 }
 
 fn main() {
-    let mut logger = LoggingFacade::new();
-    let changed = logger.change_log();
+    let mut loggable = Loggable::new();
+    let changed = logger.change();
     changed
 }
