@@ -1,4 +1,3 @@
-// grep - Search stdin or some files for lines matching a given string.
 
 use std::error::Error;
 use std::io::{self, BufReader};
