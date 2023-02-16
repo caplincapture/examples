@@ -85,8 +85,8 @@ fn main() {
 
     // b.method();
     //(b.vtable as &Foo_for_String_vtable).method(b.data)
-    unsafe{(*y.vtable).into().method(y.data)};
+    //unsafe{<(*b.vtable) as Into<T>>::into(Foo_for_String_vtable).method(b.data)};
 
     // y.method();
-    unsafe{(*y.vtable).into().method(y.data)};
+    //unsafe{(*y.vtable).into().method(y.data)};
 }
