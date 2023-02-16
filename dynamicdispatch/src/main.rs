@@ -63,6 +63,8 @@ static Foo_for_String_vtable: FooVtable = FooVtable {
     method: call_method_on_String as fn(*const()) -> String,
 };
 
+use std::mem;
+
 fn main() {
     let a: String = "foo".to_string();
     let x: u8 = 1;
@@ -76,12 +78,14 @@ fn main() {
     };
 
     // let y: &Foo = x;
-    let y = TraitObject {
+    let y = Box::new(TraitObject {
         // store the data
         data: &x as *const _ as *mut (),
         // store the methods
         vtable: &Foo_for_u8_vtable as *const _ as *mut ()
-    };
+    });
+
+    type StringFunctionAlias = fn(*const()) -> String;
 
     // b.method();
     //(b.vtable as &Foo_for_String_vtable).method(b.data)
@@ -89,4 +93,14 @@ fn main() {
 
     // y.method();
     //unsafe{(*y.vtable).into().method(y.data)};
+
+    // b.method();
+
+/*     unsafe {
+        let b = mem::transmute::<*mut (), StringFunctionAlias>(*b.vtable);
+        (b)(b.method);
+    } */
+
+/*     // y.method();
+    (y.vtable.method)(y.data); */
 }
