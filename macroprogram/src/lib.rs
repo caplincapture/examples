@@ -2,6 +2,7 @@ use std::fmt;
 
 use serde::de::{self, Deserialize, Deserializer, Visitor, SeqAccess, MapAccess};
 
+#[derive(Default)]
 struct Duration {
     secs: u64,
     nanos: u32,
@@ -100,4 +101,8 @@ impl<'de> Deserialize<'de> for Duration {
         const FIELDS: &'static [&'static str] = &["secs", "nanos"];
         deserializer.deserialize_struct("Duration", FIELDS, DurationVisitor)
     }
+}
+
+fn main() {
+
 }
