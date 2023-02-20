@@ -1,0 +1,1 @@
+/home/g/Desktop/examples/composite/target/debug/composite: /home/g/Desktop/examples/composite/src/fs/file.rs /home/g/Desktop/examples/composite/src/fs/folder.rs /home/g/Desktop/examples/composite/src/fs/mod.rs /home/g/Desktop/examples/composite/src/main.rs
