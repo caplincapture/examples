@@ -18,8 +18,4 @@ impl<D: Device> HasMutableDevice<D> for BasicRemote<D> {
     }
 }
 
-impl<D: Device> Remote<D> for BasicRemote<D> {
-    fn power(& mut self) {
-        self.device.enable()
-    }
-}
+impl<D: Device> Remote<D> for BasicRemote<D> {}

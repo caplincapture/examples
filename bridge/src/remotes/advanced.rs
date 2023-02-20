@@ -24,8 +24,4 @@ impl<D: Device> HasMutableDevice<D> for AdvancedRemove<D> {
     }
 }
 
-impl<D: Device> Remote<D> for AdvancedRemove<D> {
-    fn power(&mut self) {
-        self.device.enable()
-    }
-}
+impl<D: Device> Remote<D> for AdvancedRemove<D> {}
