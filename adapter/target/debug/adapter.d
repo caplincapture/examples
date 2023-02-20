@@ -1,0 +1,1 @@
+/home/g/Desktop/examples/adapter/target/debug/adapter: /home/g/Desktop/examples/adapter/src/adaptee.rs /home/g/Desktop/examples/adapter/src/adapter.rs /home/g/Desktop/examples/adapter/src/main.rs /home/g/Desktop/examples/adapter/src/target.rs
