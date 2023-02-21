@@ -9,20 +9,20 @@ impl UserCollection {
             users: ["Alice", "Bob", "Carl"],
         }
     }
-    pub fn iter(self) -> UserIterator {
+    pub fn iter(&self) -> UserIterator {
         UserIterator {
             index: 0,
-            user_collection: self,
+            user_collection: self
         }
     }
 }
 
-pub struct UserIterator {
+pub struct UserIterator<'a> {
     index: usize,
-    user_collection: UserCollection,
+    user_collection: &'a UserCollection,
 }
 
-impl Iterator for UserIterator {
+impl Iterator for UserIterator<'_> {
     type Item = &'static str;
 
     /// A `next` method is the only `Iterator` trait method which is mandatory to be
