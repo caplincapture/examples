@@ -33,7 +33,7 @@ impl Server for NginxServer {
     fn handle_request(&mut self, url: &str, method: &str) -> (u16, String) {
         match self.check_rate_limiting(url) {
             true => self.application.handle_request(url, method),
-            false => (404, "Not Ok".into()),
+            false => (403, "Not Ok".into()),
         }
     }
 }
