@@ -1,0 +1,1 @@
+/home/g/Desktop/examples/mediator/target/debug/mediator: /home/g/Desktop/examples/mediator/src/main.rs /home/g/Desktop/examples/mediator/src/train_station.rs /home/g/Desktop/examples/mediator/src/trains/freight_train.rs /home/g/Desktop/examples/mediator/src/trains/mod.rs /home/g/Desktop/examples/mediator/src/trains/passenger_train.rs
