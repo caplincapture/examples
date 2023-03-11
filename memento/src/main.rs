@@ -10,7 +10,9 @@ pub struct Originator {
 
 impl Originator{
     fn save(&self) -> OriginatorBackup {
-        OriginatorBackup { state: self.state }
+        OriginatorBackup { 
+            state: self.state 
+        }
     }
 }
 
@@ -20,7 +22,9 @@ pub struct OriginatorBackup {
 
 impl Memento<Originator> for OriginatorBackup {
     fn restore(&self) -> Originator {
-        Originator { state: self.state }
+        Originator {
+            state: self.state 
+        }
     }
     fn print(&self){
         println!("Originator backup: '{}'", self.state);

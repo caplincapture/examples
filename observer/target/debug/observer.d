@@ -1,0 +1,1 @@
+/home/g/Desktop/examples/observer/target/debug/observer: /home/g/Desktop/examples/observer/src/editor.rs /home/g/Desktop/examples/observer/src/main.rs /home/g/Desktop/examples/observer/src/observer.rs
