@@ -14,6 +14,11 @@ pub type Subscriber = fn(file_path: String);
 // works internally to the outward interfacing functions
 // that said, 'events' are still callable from the exterior structure
 // function simply returns internal storage
+// the subscribers are functions themselves
+// access the events by being passed to the publisher
+// publisher needs an API for indexing subscribers as well as 
+// the editor itself needing a means of storing/manipulating data, "file_path" in this case
+// incorporating statefulness etc.
 pub struct Publisher {
     pub events: HashMap<Event, Vec<Subscriber>>,
 }
