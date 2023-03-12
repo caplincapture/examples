@@ -84,7 +84,6 @@ impl State for PlayingState {
     fn stop(self: Box<Self>, player: &mut Player) -> Box<dyn State> {
         player.pause();
         player.rewind();
-
         // Playing -> Stopped.
         Box::new(StoppedState)
     }
