@@ -25,11 +25,11 @@ impl Strategy for PublicTransportStrategy {
     }
 }
 
-pub struct Navigator<T: Strategy> {
+pub struct Navigator<T> {
     strategy: T
 }
 
-impl <T: Strategy>Navigator<T> {
+impl <T: Strategy> Navigator<T> {
     fn new(strategy: T) -> Self {
         Self {
             strategy
