@@ -5,9 +5,6 @@ pub struct StoppedState;
 pub struct PausedState;
 pub struct PlayingState;
 
-
-type StateBox = Box<dyn State>;
-
 /// There is a base `State` trait with methods `play` and `stop` which make
 /// state transitions. There are also `next` and `prev` methods in a separate
 /// `impl dyn State` block below, those are default implementations
@@ -30,28 +27,28 @@ type StateBox = Box<dyn State>;
 /// state could be an enum probably
 /// 
 pub trait State {
-    fn play(self: Box<Self>, player: &mut Player) -> StateBox;
-    fn stop(self: Box<Self>, player: &mut Player) -> StateBox;
+    fn play(self: Box<Self>, player: &mut Player) -> Box<dyn State>;
+    fn stop(self: Box<Self>, player: &mut Player) -> Box<dyn State>;
     fn render(&self, player: &Player, view: &mut TextView);
 }
 
 impl dyn State {
-    pub fn next(self: Box<Self>, player: &mut Player) -> StateBox{
+    pub fn next(self: Box<Self>, player: &mut Player) -> Box<dyn State>{
         player.next_track();
         self
     }
-    pub fn prev(self: Box<Self>, player: &mut Player) -> StateBox{
+    pub fn prev(self: Box<Self>, player: &mut Player) -> Box<dyn State>{
         player.prev_track();
         self
     }
 }
 
 impl State for StoppedState {
-    fn play(self: Box<Self>, player: &mut Player) -> StateBox {
+    fn play(self: Box<Self>, player: &mut Player) -> Box<dyn State> {
         player.play();
         Box::new(PlayingState)
     }
-    fn stop(self: Box<Self>, player: &mut Player) -> StateBox {
+    fn stop(self: Box<Self>, _: &mut Player) -> Box<dyn State> {
         self
     }
     fn render(&self, _: &Player, view: &mut TextView){
@@ -60,16 +57,16 @@ impl State for StoppedState {
 }
 
 impl State for PausedState {
-    fn play(self: Box<Self>, player: &mut Player) -> StateBox {
+    fn play(self: Box<Self>, player: &mut Player) -> Box<dyn State> {
         player.pause();
         Box::new(PlayingState)
     }
-    fn stop(self: Box<Self>, player: &mut Player) -> StateBox {
+    fn stop(self: Box<Self>, player: &mut Player) -> Box<dyn State> {
         player.pause();
         player.rewind();
         Box::new(StoppedState)
     }
-    fn render(&self, _: &Player, view: &mut TextView){
+    fn render(&self, player: &Player, view: &mut TextView) {
         view.set_content(format!(
             "[Paused] {} - {} sec",
             player.track().title,
@@ -79,19 +76,19 @@ impl State for PausedState {
 }
 
 impl State for PlayingState {
-    fn play(self: Box<Self>, player: &mut Player) -> Box<dyn States> {
+    fn play(self: Box<Self>, player: &mut Player) -> Box<dyn State> {
         player.pause();
         // Playing -> Paused.
         Box::new(PausedState)
     }
-    fn stop(self: Box<Self>, player: &mut Player) -> StateBox {
+    fn stop(self: Box<Self>, player: &mut Player) -> Box<dyn State> {
         player.pause();
         player.rewind();
 
         // Playing -> Stopped.
         Box::new(StoppedState)
     }
-    fn render(&self, _: &Player, view: &mut TextView){
+    fn render(&self, player: &Player, view: &mut TextView){
         view.set_content(format!(
             "[Playing] {} - {} sec",
             player.track().title,
