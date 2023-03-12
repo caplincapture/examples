@@ -6,7 +6,7 @@ pub struct PausedState;
 pub struct PlayingState;
 
 
-type StateBox = StateBox;
+type StateBox = Box<dyn State>;
 
 /// There is a base `State` trait with methods `play` and `stop` which make
 /// state transitions. There are also `next` and `prev` methods in a separate
